@@ -6,17 +6,11 @@ import os
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from datetime import datetime
 from utils import run_full_analysis, calculate_metrics, calculate_yearly_returns
-
-# Import matplotlib for dataframe styling
-try:
-    import matplotlib
-    import matplotlib.pyplot as plt
-    MATPLOTLIB_AVAILABLE = True
-except ImportError:
-    MATPLOTLIB_AVAILABLE = False
 
 # Page configuration
 st.set_page_config(
@@ -387,23 +381,15 @@ def main():
 
                     if not yearly_returns.empty:
                         # Style the dataframe with color gradient
-                        if MATPLOTLIB_AVAILABLE:
-                            st.dataframe(
-                                yearly_returns.style.format("{:.2f}%").background_gradient(
-                                    cmap='RdYlGn',
-                                    axis=0,
-                                    vmin=-50,
-                                    vmax=50
-                                ),
+                        st.dataframe(
+                            yearly_returns.style.format("{:.2f}%").background_gradient(
+                                cmap='RdYlGn',
+                                axis=0,
+                                vmin=-50,
+                                vmax=50
+                            ),
                                 use_container_width=True
-                            )
-                        else:
-                            # Fallback to simple formatting if matplotlib is not available
-                            st.dataframe(
-                                yearly_returns.style.format("{:.2f}%"),
-                                use_container_width=True
-                            )
-                            st.info("💡 Install matplotlib for colored gradient styling")
+                        )
                     else:
                         st.info("Not enough data for yearly breakdown")
 
