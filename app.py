@@ -7,9 +7,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+import matplotlib
 from datetime import datetime
 from utils import run_full_analysis, calculate_metrics, calculate_yearly_returns
-
 
 # Page configuration
 st.set_page_config(
@@ -46,16 +46,13 @@ def load_stock_data(symbol):
 
     df = pd.read_csv(
         csv_path,
+        parse_dates=["Date"],
         index_col="Date",
         usecols=["Date", "Open", "Close"]
     )
 
-    # Parse dates with UTC to handle mixed timezones correctly
-    df.index = pd.to_datetime(df.index, utc=True, errors="coerce")
-    df = df[~df.index.isna()]
-
-    # Convert to local time (remove timezone)
-    df.index = df.index.tz_localize(None)
+    # Convert to proper DatetimeIndex and remove timezone
+    df.index = pd.to_datetime(df.index, utc=True).tz_localize(None)
 
     df = df.sort_index()
 
