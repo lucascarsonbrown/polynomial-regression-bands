@@ -7,9 +7,16 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-# import matplotlib
 from datetime import datetime
 from utils import run_full_analysis, calculate_metrics, calculate_yearly_returns
+
+# Import matplotlib for dataframe styling
+try:
+    import matplotlib
+    import matplotlib.pyplot as plt
+    MATPLOTLIB_AVAILABLE = True
+except ImportError:
+    MATPLOTLIB_AVAILABLE = False
 
 # Page configuration
 st.set_page_config(
@@ -379,9 +386,8 @@ def main():
                     yearly_returns = calculate_yearly_returns(df)
 
                     if not yearly_returns.empty:
-                        # Style the dataframe
-                        try:
-                            # Try to use background_gradient if matplotlib is available
+                        # Style the dataframe with color gradient
+                        if MATPLOTLIB_AVAILABLE:
                             st.dataframe(
                                 yearly_returns.style.format("{:.2f}%").background_gradient(
                                     cmap='RdYlGn',
@@ -391,12 +397,13 @@ def main():
                                 ),
                                 use_container_width=True
                             )
-                        except ImportError:
+                        else:
                             # Fallback to simple formatting if matplotlib is not available
                             st.dataframe(
                                 yearly_returns.style.format("{:.2f}%"),
                                 use_container_width=True
                             )
+                            st.info("💡 Install matplotlib for colored gradient styling")
                     else:
                         st.info("Not enough data for yearly breakdown")
 
