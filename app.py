@@ -31,7 +31,7 @@ NASDAQ100_TICKERS = [
     "VRSK", "VRTX", "WBD", "WDAY", "XEL", "ZS"
 ]
 
-DATA_DIRECTORY = "data/nasdaq100_data"
+DATA_DIRECTORY = "nasdaq100_data"
 
 
 @st.cache_data
