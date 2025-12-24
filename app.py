@@ -37,7 +37,9 @@ DATA_DIRECTORY = "nasdaq100_data"
 @st.cache_data
 def load_stock_data(symbol):
     """Load stock data from CSV file."""
-    csv_path = os.path.join(DATA_DIRECTORY, f"{symbol}.csv")
+    # Get the directory where app.py is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(base_dir, DATA_DIRECTORY, f"{symbol}.csv")
 
     if not os.path.exists(csv_path):
         return None
@@ -232,7 +234,7 @@ def main():
             st.markdown("---")
 
             # Chart 1: Polynomial Bands Visualization
-            st.header("📊 Polynomial Bands & Price Action")
+            st.header("Polynomial Bands & Price Action")
 
             fig_bands = go.Figure()
 
@@ -300,7 +302,7 @@ def main():
             st.markdown("---")
 
             # Chart 2: Portfolio Value Comparison
-            st.header("💰 Portfolio Value Comparison")
+            st.header("Portfolio Value Comparison")
 
             fig_portfolio = go.Figure()
 
@@ -340,10 +342,10 @@ def main():
             st.markdown("---")
 
             # Metrics Section
-            st.header("📈 Performance Metrics")
+            st.header("Performance Metrics")
 
             for symbol, df in filtered_results.items():
-                with st.expander(f"📊 {symbol} Detailed Metrics", expanded=len(filtered_results) == 1):
+                with st.expander(f"{symbol} Metrics", expanded=len(filtered_results) == 1):
                     metrics = calculate_metrics(df)
 
                     # Display key metrics in columns
