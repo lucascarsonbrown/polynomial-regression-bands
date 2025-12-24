@@ -380,15 +380,23 @@ def main():
 
                     if not yearly_returns.empty:
                         # Style the dataframe
-                        st.dataframe(
-                            yearly_returns.style.format("{:.2f}%").background_gradient(
-                                cmap='RdYlGn',
-                                axis=0,
-                                vmin=-50,
-                                vmax=50
-                            ),
-                            use_container_width=True
-                        )
+                        try:
+                            # Try to use background_gradient if matplotlib is available
+                            st.dataframe(
+                                yearly_returns.style.format("{:.2f}%").background_gradient(
+                                    cmap='RdYlGn',
+                                    axis=0,
+                                    vmin=-50,
+                                    vmax=50
+                                ),
+                                use_container_width=True
+                            )
+                        except ImportError:
+                            # Fallback to simple formatting if matplotlib is not available
+                            st.dataframe(
+                                yearly_returns.style.format("{:.2f}%"),
+                                use_container_width=True
+                            )
                     else:
                         st.info("Not enough data for yearly breakdown")
 
