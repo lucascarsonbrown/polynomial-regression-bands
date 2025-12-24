@@ -7,7 +7,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-import matplotlib
+# import matplotlib
 from datetime import datetime
 from utils import run_full_analysis, calculate_metrics, calculate_yearly_returns
 
