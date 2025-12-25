@@ -105,9 +105,12 @@ def calculate_metrics(df):
     else:
         metrics['win_rate'] = 0
 
-    # Number of trades (position changes)
-    position_changes = df["Position"].diff().fillna(0)
-    metrics['num_trades'] = len(position_changes[position_changes != 0])
+    # Number of trades (complete entry-exit pairs)
+    position_changes = df["Position"].diff()
+    entries = (position_changes == 1).sum()  # Position changes from 0 to 1
+    exits = (position_changes == -1).sum()   # Position changes from 1 to 0
+    # Count complete trades (min of entries and exits)
+    metrics['num_trades'] = min(entries, exits)
 
     return metrics
 
